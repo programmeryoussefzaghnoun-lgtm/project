@@ -1,0 +1,904 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>سلام الروح</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<style>
+/* Layout: sticky header with cart, hero with drifting dust particles and a floating stack of covers, then catalog, reader finder, membership, reviews, FAQ, contact. Gold-to-rose-to-violet gradient is the single flashy accent. */
+:root{
+  --bg:#0c0a16; --bg2:#14111f; --card:#1a1628; --fg:#f5f1ff; --muted:#aaa4c4; --line:#2e2947;
+  --accent:#f5b544; --accent2:#5eead4; --accent3:#ff6b8b; --violet:#a78bfa;
+  --grad:linear-gradient(120deg,var(--accent),var(--accent3) 48%,var(--violet));
+  --glow:rgba(245,181,68,.34); --ok:#3ddc97; --bad:#ff7b7b; --on-accent:#1b1030;
+  --display:'Aref Ruqaa','Reem Kufi','Segoe UI',Tahoma,serif;
+  --body:'IBM Plex Sans Arabic','Segoe UI',Tahoma,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme:light){
+  :root:not([data-theme="dark"]){
+    --bg:#fbf7ee; --bg2:#f3ecdc; --card:#ffffff; --fg:#21172e; --muted:#675e7a; --line:#e0d6c0;
+    --accent:#b45309; --accent2:#0f766e; --accent3:#be185d; --violet:#6d28d9;
+    --glow:rgba(180,83,9,.22); --ok:#14804f; --bad:#c62828; --on-accent:#ffffff; color-scheme:light;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#fbf7ee; --bg2:#f3ecdc; --card:#ffffff; --fg:#21172e; --muted:#675e7a; --line:#e0d6c0;
+  --accent:#b45309; --accent2:#0f766e; --accent3:#be185d; --violet:#6d28d9;
+  --glow:rgba(180,83,9,.22); --ok:#14804f; --bad:#c62828; --on-accent:#ffffff; color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.8;overflow-x:clip}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--bg) 94%,transparent)}
+h1,h2,h3,h4{font-family:var(--display);font-weight:700;line-height:1.5;margin:0;text-wrap:balance}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent2);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section{scroll-margin-top:84px}
+.sec{padding-block:clamp(56px,8vw,104px)}
+.alt{background:var(--bg2)}
+.eyebrow{font-family:var(--body);font-weight:600;font-size:.85rem;letter-spacing:.08em;color:var(--accent2);display:inline-flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:28px;height:2px;background:var(--grad)}
+.sec-head{display:grid;gap:8px;margin-bottom:clamp(28px,4vw,48px);max-width:640px}
+.sec-head h2{font-size:clamp(2rem,4.8vw,3.2rem)}
+.sec-head p{color:var(--muted)}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+
+#progress{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;height:3px;z-index:70;pointer-events:none}
+#progress i{display:block;height:100%;width:0;background:var(--grad);box-shadow:0 0 12px var(--glow);margin-inline-start:auto}
+#cursorGlow{position:fixed;width:420px;height:420px;border-radius:50%;pointer-events:none;z-index:1;left:0;top:0;background:radial-gradient(circle,var(--glow),transparent 65%);opacity:0;transition:opacity .3s;mix-blend-mode:screen}
+#toTop{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:calc(16px + env(safe-area-inset-left,0px));z-index:40;width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;opacity:0;pointer-events:none;transform:translateY(12px);transition:.3s}
+#toTop.show{opacity:1;pointer-events:auto;transform:none}
+#toTop:hover{border-color:var(--accent);box-shadow:0 0 18px var(--glow)}
+
+.header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.header .wrap{display:flex;align-items:center;gap:16px;min-height:68px}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:1.6rem;font-weight:700;background:none;border:0;padding:0;white-space:nowrap}
+.logo svg{width:36px;height:36px;flex:none}
+.nav{display:none;margin-inline-start:auto;gap:2px}
+.nav a{padding:8px 13px;border-radius:999px;color:var(--muted);font-weight:500;transition:.2s;white-space:nowrap}
+.nav a:hover,.nav a.on{color:var(--fg);background:color-mix(in srgb,var(--accent) 16%,transparent)}
+.nav.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--line);padding:12px max(16px,env(safe-area-inset-right,0px)) 18px max(16px,env(safe-area-inset-left,0px))}
+.tools{display:flex;align-items:center;gap:8px;margin-inline-start:auto}
+.icon-btn{position:relative;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;transition:.2s;flex:none}
+.icon-btn:hover{border-color:var(--accent2);box-shadow:0 0 16px color-mix(in srgb,var(--accent2) 40%,transparent)}
+.cnt{position:absolute;top:-5px;right:-5px;min-width:20px;height:20px;padding:0 5px;border-radius:99px;background:var(--grad);color:var(--on-accent);font-family:var(--mono);font-size:.72rem;line-height:20px;text-align:center;font-weight:500}
+.cnt.bump{animation:bump .4s}
+@keyframes bump{40%{transform:scale(1.5)}}
+.burger{display:grid}
+@media (min-width:1000px){.nav{display:flex}.burger{display:none}.tools{margin-inline-start:0}}
+
+.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:13px 26px;border-radius:999px;border:1px solid var(--line);background:var(--card);font-weight:600;transition:transform .2s,box-shadow .2s,border-color .2s}
+.btn:hover{transform:translateY(-2px);border-color:var(--accent2)}
+.btn.primary{border:0;background:var(--grad);color:var(--on-accent);box-shadow:0 10px 30px -8px var(--glow)}
+.btn.primary::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-20deg);transition:left .6s}
+.btn.primary:hover::after{left:130%}
+.btn.sm{padding:8px 16px;font-size:.9rem}
+.hide-sm{display:none}
+@media (min-width:640px){.hide-sm{display:inline-flex}}
+
+/* covers */
+.cover{position:relative;width:100%;aspect-ratio:3/4;display:flex;flex-direction:column;justify-content:space-between;padding:16px 16px 14px 24px;border-radius:14px 5px 5px 14px;color:#fff;overflow:hidden;box-shadow:0 18px 40px -14px rgba(0,0,0,.55);text-align:start}
+.cover::before{content:"";position:absolute;top:0;bottom:0;right:0;width:12px;background:linear-gradient(90deg,rgba(0,0,0,.3),rgba(255,255,255,.2),rgba(0,0,0,.18))}
+.cover::after{content:"";position:absolute;width:70%;aspect-ratio:1;border-radius:50%;left:-22%;bottom:-18%;border:2px solid rgba(255,255,255,.28);box-shadow:0 0 0 14px rgba(255,255,255,.08)}
+.cover>*{position:relative;z-index:1}
+.cover .ck{font-size:.72rem;letter-spacing:.06em;opacity:.9}
+.cover .ct{font-family:var(--display);font-size:clamp(1.3rem,2.4vw,1.65rem);line-height:1.5;text-shadow:0 3px 18px rgba(0,0,0,.45)}
+.cover .ca{font-size:.78rem;opacity:.92}
+
+/* hero */
+.hero{position:relative;overflow:hidden;padding-block:clamp(40px,7vw,88px) clamp(40px,6vw,72px);isolation:isolate}
+#fx{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
+.hero::after{content:"";position:absolute;inset:auto 0 0;height:120px;background:linear-gradient(transparent,var(--bg));z-index:-1}
+.hero .wrap{display:grid;gap:40px;align-items:center}
+@media (min-width:960px){.hero .wrap{grid-template-columns:1.15fr .85fr}}
+.badge{display:inline-flex;align-items:center;gap:10px;padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--card) 80%,transparent);font-size:.88rem;color:var(--muted)}
+.badge b{width:8px;height:8px;border-radius:50%;background:var(--ok);animation:ping 1.8s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 var(--ok)}70%,100%{box-shadow:0 0 0 9px transparent}}
+.hero h1{font-size:clamp(2.7rem,7.6vw,5.2rem);margin-block:16px 18px}
+.hero h1 .typed{display:inline-block;min-height:1.5em}
+.caret{display:inline-block;width:3px;height:.8em;background:var(--accent2);margin-inline-start:4px;vertical-align:-.05em;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.hero p.lead{max-width:540px;color:var(--muted);font-size:1.1rem}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.stack{position:relative;width:min(100%,400px);aspect-ratio:1;margin-inline:auto}
+.stack::before{content:"";position:absolute;inset:8%;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 68%)}
+.stack .cover{position:absolute;width:46%;animation:bob 5s ease-in-out infinite alternate}
+.stack .cover:nth-child(1){right:4%;top:12%;rotate:8deg;z-index:2}
+.stack .cover:nth-child(2){left:2%;top:2%;rotate:-9deg;animation-delay:-1.6s}
+.stack .cover:nth-child(3){left:27%;bottom:0;rotate:2deg;z-index:3;animation-delay:-3.2s}
+@keyframes bob{to{translate:0 -14px}}
+
+.marquee{direction:ltr;overflow:hidden;border-block:1px solid var(--line);background:var(--bg2);padding-block:14px}
+.marquee .track{display:flex;gap:44px;width:max-content;animation:slide 34s linear infinite}
+.marquee:hover .track{animation-play-state:paused}
+.marquee span{font-family:var(--body);font-size:1rem;color:var(--muted);white-space:nowrap}
+.marquee span::before{content:"✦";color:var(--accent);margin-right:44px}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+@media (min-width:760px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat{padding:24px 20px;border:1px solid var(--line);border-radius:20px;background:var(--card)}
+.stat strong{display:block;font-family:var(--display);font-size:clamp(2.2rem,5vw,3.2rem);line-height:1.3;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:.95rem}
+
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.tab{padding:10px 22px;border-radius:999px;border:1px solid var(--line);background:var(--card);font-weight:600;transition:.2s}
+.tab[aria-selected="true"]{background:var(--grad);border-color:transparent;color:var(--on-accent);box-shadow:0 8px 24px -8px var(--glow)}
+.panel{display:grid;gap:28px;padding:clamp(20px,4vw,40px);border:1px solid var(--line);border-radius:28px;background:var(--card);animation:fade .45s}
+@media (min-width:860px){.panel{grid-template-columns:1.1fr .9fr}}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}}
+.panel h3{font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:8px}
+.panel p{color:var(--muted)}
+.checks{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:8px}
+.checks li{display:flex;gap:10px;align-items:flex-start}
+.checks li::before{content:"";flex:none;width:20px;height:20px;margin-top:4px;background:var(--grad);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3.2L15 6.8' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='10' cy='10' r='9' fill='none' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3.2L15 6.8' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='10' cy='10' r='9' fill='none' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E") center/contain no-repeat}
+.meters{display:grid;gap:18px;align-content:center}
+.meters small{color:var(--muted)}
+.meter .row{display:flex;justify-content:space-between;font-size:.95rem;margin-bottom:6px}
+.meter .row b{font-family:var(--mono);font-weight:500;color:var(--accent2)}
+.bar{height:10px;border-radius:99px;background:var(--bg2);overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:99px;background:var(--grad);transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+
+.tilt{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .18s ease-out,box-shadow .2s,border-color .2s;will-change:transform}
+
+/* catalog */
+.toolbar{display:grid;gap:12px;margin-bottom:24px}
+@media (min-width:760px){.toolbar{grid-template-columns:1fr auto}}
+.toolbar .tb-row{display:flex;gap:10px;flex-wrap:wrap}
+.field input[type=text],.field input[type=email],.field select,.field textarea,.toolbar input,.toolbar select{width:100%;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:var(--bg);transition:border-color .2s}
+.toolbar input{flex:1 1 220px;min-width:0}
+.toolbar select{width:auto;flex:0 0 auto}
+.field select:focus,.field input:focus,.field textarea:focus,.toolbar input:focus,.toolbar select:focus{border-color:var(--accent2);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent2) 25%,transparent)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;align-content:center}
+.chip-btn{padding:8px 18px;border-radius:999px;border:1px solid var(--line);background:transparent;font-weight:500;transition:.2s}
+.chip-btn:hover{border-color:var(--accent2)}
+.chip-btn[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.grid{display:grid;gap:22px;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr))}
+.book{position:relative;display:flex;flex-direction:column;gap:12px;padding:16px;border:1px solid var(--line);border-radius:22px;background:var(--card)}
+.book:hover{border-color:var(--accent);box-shadow:0 18px 44px -18px var(--glow)}
+.cover-btn{display:block;width:100%;padding:0;border:0;background:none;border-radius:14px 5px 5px 14px}
+.book h3{font-family:var(--body);font-size:1.05rem;line-height:1.5;font-weight:600}
+.book .au{color:var(--muted);font-size:.88rem}
+.book .buy{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto}
+.price{font-family:var(--mono);font-size:1.05rem;font-variant-numeric:tabular-nums}
+.heart{position:absolute;top:22px;left:22px;z-index:3;width:36px;height:36px;border-radius:50%;border:0;background:rgba(10,8,20,.5);color:#fff;display:grid;place-items:center;backdrop-filter:blur(4px)}
+.heart svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2}
+.heart[aria-pressed="true"]{background:var(--accent3)}
+.heart[aria-pressed="true"] svg{fill:currentColor}
+.empty{grid-column:1/-1;padding:40px 16px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:20px}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:100;display:none;place-items:center;padding:20px;background:rgba(5,4,12,.72);backdrop-filter:blur(6px)}
+.modal.open{display:grid;animation:fade .25s}
+.modal-wrap{position:relative;width:min(100%,640px);max-height:100%}
+.modal-card{max-height:calc(100vh - 40px);overflow:auto;border-radius:26px;background:var(--card);border:1px solid var(--line);box-shadow:0 30px 80px -20px rgba(0,0,0,.6)}
+.modal-body{display:grid;gap:14px;padding:22px 24px 26px}
+.modal-top{display:grid;gap:20px;padding:24px 24px 0}
+@media (min-width:560px){.modal-top{grid-template-columns:170px 1fr;align-items:start}}
+.modal-top .cover{max-width:170px}
+.modal-body .tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{padding:3px 12px;border-radius:99px;background:var(--bg2);border:1px solid var(--line);font-size:.82rem}
+.modal-x{position:absolute;top:14px;left:14px;z-index:2;background:rgba(0,0,0,.5);border-color:transparent;color:#fff}
+
+/* finder */
+.est{display:grid;gap:24px}
+@media (min-width:900px){.est{grid-template-columns:1.1fr .9fr}}
+.box{padding:clamp(20px,3.5vw,32px);border:1px solid var(--line);border-radius:26px;background:var(--card)}
+.field{display:grid;gap:8px;margin-bottom:20px}
+.field label,.field .lbl{font-weight:600}
+.field.err input,.field.err textarea,.field.err select{border-color:var(--bad)}
+.field .msg{min-height:1.3em;color:var(--bad);font-size:.86rem}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.range-row{display:flex;align-items:center;gap:14px}
+.range-row output{font-family:var(--mono);min-width:5ch;text-align:center;color:var(--accent2)}
+.opts{display:grid;gap:10px}
+.opt{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;cursor:pointer;transition:.2s}
+.opt:hover{border-color:var(--accent2)}
+.opt input{accent-color:var(--accent);width:18px;height:18px}
+.opt span{flex:1}
+.result{position:relative;overflow:hidden;color:#fff;background:linear-gradient(140deg,#2b1459,#102a52);border:0}
+.result::before{content:"";position:absolute;width:280px;height:280px;border-radius:50%;left:-90px;top:-90px;background:radial-gradient(circle,rgba(245,181,68,.45),transparent 70%)}
+.result>*{position:relative}
+.result small{color:#d3ccf0}
+.result .big{font-family:var(--display);font-size:clamp(2rem,5vw,3rem);line-height:1.4;margin-block:4px 2px}
+.result .line{display:flex;justify-content:space-between;gap:12px;padding-block:10px;border-top:1px solid rgba(255,255,255,.16)}
+.result ul{margin:10px 0 0;padding:0 18px 0 0;color:#e7e2fa}
+.result .btn{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.3);color:#fff}
+.result .btn.primary{background:var(--grad);color:var(--on-accent);border:0}
+.result .row-btn{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+
+/* plans */
+.switch-row{display:flex;align-items:center;gap:14px;margin-bottom:28px;flex-wrap:wrap}
+.switch{position:relative;width:60px;height:32px;border-radius:99px;border:1px solid var(--line);background:var(--card);padding:0}
+.switch i{position:absolute;top:3px;right:3px;width:24px;height:24px;border-radius:50%;background:var(--grad);transition:transform .25s}
+.switch[aria-checked="true"] i{transform:translateX(-28px)}
+.save{padding:2px 12px;border-radius:99px;background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok);font-size:.82rem;font-weight:600}
+.plan{display:flex;flex-direction:column;gap:14px;padding:28px 24px;border-radius:26px;background:var(--card);border:1.5px solid var(--line)}
+.plan.feat{border:1.5px solid transparent;background:linear-gradient(var(--card),var(--card)) padding-box,var(--grad) border-box;box-shadow:0 24px 60px -24px var(--glow)}
+.plan .tagl{align-self:flex-start;padding:2px 12px;border-radius:99px;background:var(--grad);color:var(--on-accent);font-size:.78rem;font-weight:600}
+.plan .pr{font-family:var(--display);font-size:3rem;line-height:1.2;font-variant-numeric:tabular-nums}
+.plan .pr small{font-family:var(--body);font-size:.95rem;color:var(--muted)}
+.plan .checks{flex:1}
+
+/* reviews */
+.slider{position:relative;max-width:820px}
+.slide{display:none;padding:clamp(24px,4vw,44px);border:1px solid var(--line);border-radius:28px;background:var(--card)}
+.slide.active{display:block;animation:fade .5s}
+.slide q{display:block;font-family:var(--display);font-size:clamp(1.4rem,3vw,2rem);line-height:1.7;quotes:none}
+.who{display:flex;align-items:center;gap:14px;margin-top:22px}
+.avatar{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:var(--grad);color:var(--on-accent);font-family:var(--display);font-size:1.5rem}
+.who small{display:block;color:var(--muted)}
+.slider-ctl{display:flex;align-items:center;gap:10px;margin-top:18px}
+.dots{display:flex;gap:8px;margin-inline:8px}
+.dot{width:10px;height:10px;border-radius:99px;border:0;padding:0;background:var(--line);transition:.3s}
+.dot[aria-current="true"]{width:30px;background:var(--grad)}
+
+.faq{display:grid;gap:12px;max-width:820px}
+.qa{border:1px solid var(--line);border-radius:18px;background:var(--card);overflow:hidden}
+.qa>button{width:100%;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 22px;background:none;border:0;text-align:start;font-weight:600;font-size:1.05rem}
+.qa .pm{flex:none;width:26px;height:26px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;transition:.3s;font-family:var(--mono)}
+.qa.open .pm{transform:rotate(45deg);background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.qa .ans{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s}
+.qa.open .ans{grid-template-rows:1fr}
+.qa .ans>div{overflow:hidden;min-height:0}
+.qa .ans p{padding:0 22px 20px;color:var(--muted)}
+
+.contact{display:grid;gap:24px}
+@media (min-width:900px){.contact{grid-template-columns:.8fr 1.2fr}}
+.info{display:grid;gap:16px;align-content:start}
+.info .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:14px 16px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
+.info .row span.v{font-family:var(--mono);font-size:.92rem;user-select:all;overflow-wrap:anywhere;min-width:0}
+.two{display:grid;gap:0 16px}
+@media (min-width:600px){.two{grid-template-columns:1fr 1fr}}
+.field textarea{min-height:130px;resize:vertical}
+
+footer{border-top:1px solid var(--line);padding-block:36px calc(36px + env(safe-area-inset-bottom,0px))}
+footer .wrap{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;color:var(--muted);font-size:.92rem}
+
+/* cart drawer */
+.scrim{position:fixed;inset:0;z-index:104;background:rgba(5,4,12,.6);opacity:0;pointer-events:none;transition:opacity .3s}
+.scrim.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;bottom:0;left:0;z-index:105;width:min(100%,420px);display:flex;flex-direction:column;background:var(--bg2);border-right:1px solid var(--line);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);transform:translateX(-105%);visibility:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1),visibility .35s}
+.drawer.open{transform:none;visibility:visible}
+.d-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line)}
+.d-head h3{font-size:1.5rem}
+.ship{padding:14px 20px;border-bottom:1px solid var(--line);font-size:.92rem;display:grid;gap:8px}
+.d-list{flex:1;overflow:auto;padding:12px 20px;display:grid;gap:14px;align-content:start}
+.ci{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:center}
+.mini{width:48px;aspect-ratio:3/4;border-radius:8px 3px 3px 8px;box-shadow:0 6px 14px -6px rgba(0,0,0,.5)}
+.ci b{display:block;font-weight:600;line-height:1.4;font-size:.95rem}
+.ci small{color:var(--muted)}
+.qty{display:inline-flex;align-items:center;gap:6px;margin-top:6px}
+.qty button{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:var(--card);line-height:1;padding:0}
+.qty button:hover{border-color:var(--accent)}
+.qty span{min-width:1.5em;text-align:center;font-family:var(--mono)}
+.d-foot{padding:16px 20px;border-top:1px solid var(--line);display:grid;gap:12px}
+.d-foot .tot{display:flex;justify-content:space-between;font-size:1.1rem;font-weight:600}
+.rm{background:none;border:0;color:var(--muted);font-size:.82rem;text-decoration:underline;padding:0}
+
+#toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));right:50%;transform:translate(50%,30px);z-index:120;max-width:min(92%,460px);padding:14px 22px;border-radius:16px;background:var(--fg);color:var(--bg);font-weight:500;opacity:0;pointer-events:none;transition:.35s;box-shadow:0 16px 40px -12px rgba(0,0,0,.5)}
+#toast.show{opacity:1;transform:translate(50%,0)}
+#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:130}
+.reveal{transform:translateY(24px);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{transform:none}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .marquee .track{animation:none}
+}
+</style>
+
+<div id="app" dir="rtl" lang="ar">
+<div id="progress" aria-hidden="true"><i></i></div>
+<div id="cursorGlow" aria-hidden="true"></div>
+
+<header class="header">
+  <div class="wrap">
+    <button class="logo" id="logo" aria-label="مكتبة سلام الروح، اضغط للاحتفال">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f5b544"/><stop offset=".55" stop-color="#ff6b8b"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><rect width="40" height="40" rx="12" fill="url(#lg)"/><path d="M8 12c4-2 8-1.6 12 1 4-2.6 8-3 12-1v15c-4-2-8-1.6-12 1-4-2.6-8-3-12-1z" fill="none" stroke="#1b1030" stroke-width="2.4" stroke-linejoin="round"/><path d="M20 13v15" stroke="#1b1030" stroke-width="2.4"/></svg>
+      <span>سلام الروح</span>
+    </button>
+    <nav class="nav" id="nav" aria-label="التنقل الرئيسي">
+      <a href="#sections">الأقسام</a>
+      <a href="#books">الكتب</a>
+      <a href="#finder">اختر كتابك</a>
+      <a href="#membership">العضوية</a>
+      <a href="#reviews">آراء القرّاء</a>
+      <a href="#faq">أسئلة</a>
+      <a href="#contact">تواصل</a>
+    </nav>
+    <div class="tools">
+      <button class="icon-btn" id="themeBtn" aria-label="تبديل المظهر الداكن والفاتح" title="تبديل المظهر">
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 2a8 8 0 0 1 0 16z" fill="currentColor"/></svg>
+      </button>
+      <button class="icon-btn" id="cartBtn" aria-label="فتح السلة" aria-controls="drawer">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2.5l2.2 11h10.2l2-8H7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="19.5" r="1.4" fill="currentColor"/><circle cx="17" cy="19.5" r="1.4" fill="currentColor"/></svg>
+        <span class="cnt" id="cartCnt">0</span>
+      </button>
+      <button class="icon-btn burger" id="burger" aria-label="فتح القائمة" aria-expanded="false" aria-controls="nav">
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="top">
+  <canvas id="fx" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div>
+      <span class="badge"><b></b> شحن مجاني للطلبات فوق $40</span>
+      <h1>في سلام الروح<br>تجد <span class="grad-text typed" id="typed">رواية تأسرك</span><span class="caret" aria-hidden="true"></span></h1>
+      <p class="lead">مكتبة إلكترونية تختار كتبها بعناية: روايات وشعر وفكر وكتب للأطفال، مع تغليف هدايا مجاني وتوصيل سريع إلى باب بيتك.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="#books">تصفّح الكتب</a>
+        <a class="btn" href="#finder">اختر كتابك القادم</a>
+      </div>
+    </div>
+    <div class="stack" id="stack" aria-hidden="true"></div>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true"><div class="track" id="track"></div></div>
+
+<section class="sec" aria-label="أرقام">
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat reveal"><strong data-to="12000" data-suffix="+">12,000+</strong><span>عنوان متوفر</span></div>
+      <div class="stat reveal"><strong data-to="8500" data-suffix="+">8,500+</strong><span>قارئ سعيد</span></div>
+      <div class="stat reveal"><strong data-to="14" data-suffix="">14</strong><span>دولة نشحن إليها</span></div>
+      <div class="stat reveal"><strong data-to="48" data-suffix=" س">48 س</strong><span>متوسط زمن التوصيل</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec alt" id="sections">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">أقسام المكتبة</span><h2>لكل قارئ رفّه</h2><p>اختر القسم لترى ما فيه وما يطلبه القرّاء أكثر.</p></div>
+    <div class="tabs" role="tablist" aria-label="الأقسام" id="tabs"></div>
+    <div class="panel" id="panel" role="tabpanel"></div>
+  </div>
+</section>
+
+<section class="sec" id="books">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">معرض الكتب</span><h2>اختر، أضف، واقرأ</h2><p>ابحث بالعنوان أو المؤلف، وصفّ حسب القسم، واضغط على الغلاف لقراءة التفاصيل.</p></div>
+    <div class="toolbar">
+      <div class="tb-row">
+        <input type="text" id="q" placeholder="ابحث عن عنوان أو مؤلف" aria-label="ابحث عن كتاب">
+        <select id="sort" aria-label="ترتيب الكتب"><option value="def">الترتيب الافتراضي</option><option value="asc">السعر: الأقل أولاً</option><option value="desc">السعر: الأعلى أولاً</option></select>
+      </div>
+      <div class="chips" id="filters" role="group" aria-label="تصفية حسب القسم"></div>
+    </div>
+    <div class="grid" id="shelf" aria-live="polite"></div>
+  </div>
+</section>
+
+<section class="sec alt" id="finder">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">اختر كتابك</span><h2>لا تعرف ماذا تقرأ؟</h2><p>أخبرنا بمزاجك وما تفضّله، وسنقترح عليك كتاباً من مكتبتنا.</p></div>
+    <div class="est">
+      <div class="box">
+        <div class="field"><label for="mood">كيف تريد أن تشعر وأنت تقرأ؟</label>
+          <select id="mood">
+            <option value="calm">أريد الهدوء</option>
+            <option value="adventure">أريد التشويق</option>
+            <option value="think">أريد التفكير والتأمل</option>
+            <option value="grow">أريد أن أتطور</option>
+            <option value="kids">أبحث عن كتاب لطفل</option>
+          </select></div>
+        <div class="field"><label for="prefPages">عدد الصفحات الذي تفضله</label>
+          <div class="range-row"><input type="range" id="prefPages" min="40" max="480" step="20" value="260"><output id="prefOut" for="prefPages">260 صفحة</output></div></div>
+        <div class="field"><span class="lbl">تفضيلات إضافية</span>
+          <div class="opts">
+            <label class="opt"><input type="checkbox" data-t="gift"><span>مناسب للإهداء</span></label>
+            <label class="opt"><input type="checkbox" data-t="hard"><span>غلاف فاخر</span></label>
+            <label class="opt"><input type="checkbox" data-t="trans"><span>كتاب مترجم</span></label>
+          </div></div>
+      </div>
+      <div class="box result" id="pick" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="membership">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">عضوية القرّاء</span><h2>اقرأ أكثر وادفع أقل</h2><p>اشتراك شهري يمنحك خصماً دائماً وامتيازات خاصة.</p></div>
+    <div class="switch-row">
+      <span>شهري</span>
+      <button class="switch" id="billing" role="switch" aria-checked="false" aria-label="التبديل إلى الدفع السنوي"><i></i></button>
+      <span>سنوي</span><span class="save">وفّر 20%</span>
+    </div>
+    <div class="grid" id="plans" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr))"></div>
+  </div>
+</section>
+
+<section class="sec alt" id="reviews">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">آراء القرّاء</span><h2>كلمات من بيوت القرّاء</h2><p>أمثلة توضيحية لشكل هذا القسم.</p></div>
+    <div class="slider" id="slider" aria-roledescription="شريط عرض"></div>
+  </div>
+</section>
+
+<section class="sec" id="faq">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">أسئلة شائعة</span><h2>قبل أن تطلب</h2></div>
+    <div class="faq" id="faqList"></div>
+  </div>
+</section>
+
+<section class="sec alt" id="contact">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">تواصل معنا</span><h2>كتابك ليس عندنا؟ سنجده لك</h2><p>اكتب لنا عنوان الكتاب أو استفسارك وسنردّ خلال يوم عمل.</p></div>
+    <div class="contact">
+      <div class="info">
+        <div class="row"><span>البريد</span><span class="v" id="mail">hello@salam-alrouh.example</span><button class="btn sm" id="copyMail" type="button">نسخ</button></div>
+        <div class="row"><span>ساعات الرد</span><span class="v">كل يوم، 10 صباحاً – 8 مساءً</span></div>
+        <div class="row"><span>المتجر</span><span class="v">إلكتروني، نشحن إلى باب بيتك</span></div>
+      </div>
+      <form class="box" id="form" novalidate>
+        <div class="two">
+          <div class="field" data-f="name"><label for="fname">الاسم</label><input type="text" id="fname" autocomplete="name"><span class="msg"></span></div>
+          <div class="field" data-f="email"><label for="femail">البريد الإلكتروني</label><input type="email" id="femail" autocomplete="email" dir="ltr"><span class="msg"></span></div>
+        </div>
+        <div class="field" data-f="kind"><label for="fkind">موضوع الرسالة</label>
+          <select id="fkind"><option value="">اختر الموضوع</option><option>طلب كتاب غير متوفر</option><option>استفسار عن طلب</option><option>هدية أو كميات للمؤسسات</option></select><span class="msg"></span></div>
+        <div class="field" data-f="msg"><label for="fmsg">رسالتك</label><textarea id="fmsg"></textarea><span class="msg"></span></div>
+        <button class="btn primary" type="submit">إرسال الرسالة</button>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap"><span>© 2026 مكتبة سلام الروح</span><span>أسماء الكتب والمؤلفين والآراء والأرقام في هذه الصفحة أمثلة توضيحية.</span></div>
+</footer>
+
+<button id="toTop" aria-label="العودة للأعلى"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 16V4M4 9l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="سلة الشراء">
+  <div class="d-head"><h3>سلتك</h3><button class="icon-btn" id="dClose" aria-label="إغلاق السلة">✕</button></div>
+  <div class="ship"><span id="shipTxt"></span><div class="bar"><i id="shipBar"></i></div></div>
+  <div class="d-list" id="cartList"></div>
+  <div class="d-foot">
+    <div class="tot"><span>المجموع</span><span class="price" id="cartTotal">$0</span></div>
+    <button class="btn primary" id="checkout" type="button">إتمام الطلب</button>
+    <button class="rm" id="clearCart" type="button">إفراغ السلة</button>
+  </div>
+</aside>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="modal-wrap">
+    <button class="icon-btn modal-x" id="mClose" aria-label="إغلاق">✕</button>
+    <div class="modal-card">
+      <div class="modal-top"><div id="mCover"></div>
+        <div style="display:grid;gap:8px;align-content:start"><small class="eyebrow" id="mCat"></small><h3 id="mTitle" style="font-size:1.9rem"></h3><p id="mAuthor" style="color:var(--muted)"></p><div class="tags" id="mTags" style="display:flex;flex-wrap:wrap;gap:8px"></div></div></div>
+      <div class="modal-body">
+        <p id="mDesc" style="color:var(--muted)"></p>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap"><span class="price" id="mPrice" style="font-size:1.5rem"></span><button class="btn primary" id="mAdd" type="button">أضف إلى السلة</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<canvas id="confetti" aria-hidden="true"></canvas>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var $=function(s,r){return (r||document).querySelector(s)};
+  var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var root=document.documentElement;
+  function fmt(n){return Math.round(n).toLocaleString('en-US')}
+  function cssVar(n){return getComputedStyle(root).getPropertyValue(n).trim()}
+  function store(k,v){try{if(v===undefined){return JSON.parse(localStorage.getItem(k)||'null')}localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
+
+  /* ---------- theme ---------- */
+  function effectiveTheme(){
+    var t=root.getAttribute('data-theme');if(t)return t;
+    return window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+  }
+  try{var savedT=localStorage.getItem('salam-theme');if(savedT==='light'||savedT==='dark')root.setAttribute('data-theme',savedT);}catch(e){}
+  $('#themeBtn').addEventListener('click',function(){
+    var next=effectiveTheme()==='dark'?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{localStorage.setItem('salam-theme',next);}catch(e){}
+    fxColors();
+  });
+
+  /* ---------- toast ---------- */
+  var toastTimer;
+  function toast(msg){
+    var t=$('#toast');t.textContent=msg;t.classList.add('show');
+    clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.classList.remove('show')},3400);
+  }
+
+  /* ---------- data ---------- */
+  var TAGS={gift:'مناسب للإهداء',hard:'غلاف فاخر',trans:'مترجم'};
+  var books=[
+    {id:1,t:'ليالي الياسمين',a:'منى الخطيب',c:'novel',cn:'رواية',p:14,pg:320,g:['#831843','#db2777'],m:['calm'],tg:['gift','hard'],d:'حكاية حب تدور في مدينة ساحلية قديمة، تتقاطع فيها ثلاثة أجيال وتتشابك رسائل لم تصل إلى أصحابها.'},
+    {id:2,t:'ظلّ الغيمة',a:'سامر العلي',c:'poetry',cn:'شعر',p:9,pg:120,g:['#1e3a8a','#0ea5e9'],m:['calm','think'],tg:['gift'],d:'ديوان قصير تكتبه الأيام العادية: قهوة الفجر، وطريق العودة، وأمّ تنتظر على الشرفة.'},
+    {id:3,t:'الصمت المسموع',a:'د. هالة النجار',c:'think',cn:'فكر وفلسفة',p:16,pg:260,g:['#134e4a','#14b8a6'],m:['think'],tg:['trans'],d:'مقالات تتأمل في الصمت واللغة والوحدة، وكيف نسمع أنفسنا وسط ضجيج الأيام.'},
+    {id:4,t:'مغامرات نجمة',a:'ريم السعدي',c:'kids',cn:'كتب الأطفال',p:8,pg:48,g:['#4c1d95','#8b5cf6'],m:['kids'],tg:['gift','hard'],d:'نجمة صغيرة تضيع من السماء وتبحث عن طريق العودة مع أصدقاء جدد. رسوم ملونة وجمل قصيرة للقراءة بصوت عالٍ.'},
+    {id:5,t:'عادات صغيرة، حياة كبيرة',a:'يوسف المهدي',c:'grow',cn:'تنمية ذاتية',p:12,pg:210,g:['#9a3412','#ea580c'],m:['grow'],tg:['trans'],d:'دليل عملي يبدأ من خطوة تستغرق دقيقتين، ويبني عليها نظاماً يومياً يدوم بلا إرهاق.'},
+    {id:6,t:'خريف على النيل',a:'أحمد فؤاد',c:'novel',cn:'رواية',p:13,pg:380,g:['#7c2d12','#d97706'],m:['calm','adventure'],tg:['hard'],d:'صحفي يعود إلى مدينة طفولته ليكتب عن بيت يُهدم، فيجد في أنقاضه أسراراً عن عائلته.'},
+    {id:7,t:'مدن من ورق',a:'د. ليث حمدان',c:'think',cn:'تاريخ',p:18,pg:440,g:['#312e81','#6366f1'],m:['think','adventure'],tg:['trans','hard'],d:'رحلة عبر مدن اندثرت، تروي كيف تصنع الخرائط والوثائق والحكايات ذاكرة الشعوب.'},
+    {id:8,t:'رسائل إلى الغد',a:'دانة الشامي',c:'poetry',cn:'شعر ونثر',p:10,pg:150,g:['#9f1239','#fb7185'],m:['calm','think'],tg:['gift'],d:'رسائل قصيرة بين الشعر والنثر، كتبتها الشاعرة لنفسها بعد عشر سنوات من الآن.'},
+    {id:9,t:'قاعة الأسرار',a:'هادي زيدان',c:'novel',cn:'رواية غموض',p:12,pg:300,g:['#0f172a','#475569'],m:['adventure'],tg:['trans'],d:'مكتبة قديمة تُغلق أبوابها كل ليلة في ساعة محددة، ومحقق يكتشف أن كتاباً واحداً يتغير كل مرة.'},
+    {id:10,t:'أسرار البحر الصغير',a:'ريم السعدي',c:'kids',cn:'كتب الأطفال',p:9,pg:56,g:['#0c4a6e','#06b6d4'],m:['kids','adventure'],tg:['gift'],d:'يغوص طفل في بحر صغير خلف بيته فيلتقي بكائنات تعلّمه أن يحافظ على ما يحب.'}
+  ];
+  var byId={};books.forEach(function(b){byId[b.id]=b});
+  function coverHTML(b){return '<div class="cover" style="background:linear-gradient(150deg,'+b.g[0]+','+b.g[1]+')"><span class="ck">'+b.cn+'</span><span class="ct">'+b.t+'</span><span class="ca">'+b.a+'</span></div>'}
+
+  /* ---------- menu, anchors ---------- */
+  var nav=$('#nav'),burger=$('#burger');
+  burger.addEventListener('click',function(){var o=nav.classList.toggle('open');burger.setAttribute('aria-expanded',o)});
+  $$('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click',function(e){
+      var id=a.getAttribute('href').slice(1),el=id&&document.getElementById(id);
+      if(!el)return;e.preventDefault();
+      el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
+      nav.classList.remove('open');burger.setAttribute('aria-expanded','false');
+    });
+  });
+
+  /* ---------- scroll ui ---------- */
+  var bar=$('#progress i'),toTop=$('#toTop');
+  function onScroll(){
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    bar.style.width=(h>0?Math.min(1,window.scrollY/h)*100:0)+'%';
+    toTop.classList.toggle('show',window.scrollY>600);
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  toTop.addEventListener('click',function(){window.scrollTo({top:0,behavior:reduce?'auto':'smooth'})});
+  var links=$$('.nav a');
+  if('IntersectionObserver' in window){
+    var so=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)links.forEach(function(l){l.classList.toggle('on',l.getAttribute('href')==='#'+e.target.id)})})},{rootMargin:'-40% 0px -55% 0px'});
+    $$('section[id]').forEach(function(s){so.observe(s)});
+    var ro=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}})},{threshold:.12});
+    $$('.reveal').forEach(function(r){ro.observe(r)});
+  }else{$$('.reveal').forEach(function(r){r.classList.add('in')})}
+
+  var glow=$('#cursorGlow');
+  if(window.matchMedia('(hover:hover) and (pointer:fine)').matches&&!reduce){
+    window.addEventListener('pointermove',function(e){
+      glow.style.opacity=effectiveTheme()==='dark'?'.5':'0';
+      glow.style.transform='translate('+(e.clientX-210)+'px,'+(e.clientY-210)+'px)';
+    },{passive:true});
+  }
+
+  /* ---------- hero: covers, particles, typing ---------- */
+  $('#stack').innerHTML=[1,3,4].map(function(i){return coverHTML(byId[i])}).join('');
+  var fx=$('#fx'),ctx=fx.getContext('2d'),W=0,H=0,ps=[],mouse={x:-999,y:-999},cols=['#f5b544','#5eead4','#ff6b8b'],heroVisible=true;
+  function fxColors(){cols=[cssVar('--accent'),cssVar('--accent2'),cssVar('--accent3')];drawFx(true)}
+  function sizeFx(){
+    var r=fx.parentElement.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2);
+    W=r.width;H=r.height;fx.width=W*dpr;fx.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+    var n=Math.min(80,Math.floor(W*H/13000));ps=[];
+    for(var i=0;i<n;i++)ps.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*1.8+.8,c:i%3});
+  }
+  function drawFx(still){
+    ctx.clearRect(0,0,W,H);
+    var line=effectiveTheme()==='dark'?'255,255,255':'80,50,30';
+    for(var i=0;i<ps.length;i++){
+      var p=ps[i];
+      if(!still){
+        p.x+=p.vx;p.y+=p.vy;
+        if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
+        var dx=p.x-mouse.x,dy=p.y-mouse.y,d=Math.sqrt(dx*dx+dy*dy);
+        if(d<120&&d>0){p.x+=dx/d*1.6;p.y+=dy/d*1.6}
+      }
+      ctx.beginPath();ctx.fillStyle=cols[p.c];ctx.globalAlpha=.9;ctx.arc(p.x,p.y,p.r,0,6.283);ctx.fill();
+      for(var j=i+1;j<ps.length;j++){
+        var q=ps[j],ax=p.x-q.x,ay=p.y-q.y,dd=ax*ax+ay*ay;
+        if(dd<10000){ctx.globalAlpha=(1-dd/10000)*.2;ctx.strokeStyle='rgb('+line+')';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke()}
+      }
+    }
+    ctx.globalAlpha=1;
+  }
+  function loopFx(){if(heroVisible)drawFx(false);requestAnimationFrame(loopFx)}
+  sizeFx();fxColors();
+  window.addEventListener('resize',function(){sizeFx();drawFx(true)});
+  fx.parentElement.addEventListener('pointermove',function(e){var r=fx.getBoundingClientRect();mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top});
+  fx.parentElement.addEventListener('pointerleave',function(){mouse.x=mouse.y=-999});
+  if('IntersectionObserver' in window)new IntersectionObserver(function(es){heroVisible=es[0].isIntersecting}).observe(fx.parentElement);
+  if(!reduce)requestAnimationFrame(loopFx);
+
+  var words=['رواية تأسرك','شعراً يلامسك','فكراً يوسّع أفقك','كتاباً لطفلك'],typed=$('#typed');
+  if(!reduce){
+    var wi=0,ci=0,del=false;
+    (function tick(){
+      var w=words[wi];typed.textContent=w.slice(0,ci);
+      if(!del&&ci<w.length){ci++;setTimeout(tick,95)}
+      else if(!del){del=true;setTimeout(tick,1600)}
+      else if(ci>0){ci--;setTimeout(tick,45)}
+      else{del=false;wi=(wi+1)%words.length;setTimeout(tick,300)}
+    })();
+  }
+
+  var genres=['روايات عربية','دواوين شعر','فلسفة','تاريخ','علم نفس','قصص الأطفال','سير ذاتية','أدب مترجم','فنون وتصميم','تنمية ذاتية','مقالات','كتب الهدايا'];
+  $('#track').innerHTML=genres.concat(genres).map(function(t){return '<span>'+t+'</span>'}).join('');
+
+  function countUp(el){
+    var to=+el.dataset.to,suf=el.dataset.suffix||'',t0=null;
+    if(reduce){el.textContent=fmt(to)+suf;return}
+    function step(t){if(!t0)t0=t;var p=Math.min(1,(t-t0)/1400),e=1-Math.pow(1-p,3);el.textContent=fmt(to*e)+suf;if(p<1)requestAnimationFrame(step)}
+    requestAnimationFrame(step);
+  }
+  if('IntersectionObserver' in window){
+    var co=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){countUp(e.target);co.unobserve(e.target)}})},{threshold:.6});
+    $$('[data-to]').forEach(function(s){co.observe(s)});
+  }
+
+  /* ---------- sections tabs ---------- */
+  var services=[
+    {id:'lit',name:'أدب وروايات',title:'عوالم تسكنها ثم تسكنك',text:'من الرواية العربية إلى الأدب المترجم، ومن الشعر إلى القصة القصيرة. كتب تُقرأ في ليلة وأخرى ترافقك سنوات.',pts:['روايات عربية ومترجمة بطبعات أنيقة','دواوين شعر ونثر لقراءة هادئة','قصص قصيرة وسير ذاتية'],m:[['الرواية العربية',92],['الأدب المترجم',84],['الشعر',78]]},
+    {id:'mind',name:'فكر ومعرفة',title:'أسئلة كبيرة بلغة قريبة',text:'كتب تفتح النقاش وتبسّط العلم والتاريخ وعلم النفس دون أن تفقد عمقها.',pts:['فلسفة وعلم نفس للقارئ العام','تاريخ وحضارات بقلم مختصين','علوم مبسّطة ومقالات فكرية'],m:[['التاريخ والحضارات',88],['علم النفس',81],['الفلسفة',74]]},
+    {id:'kids',name:'الأطفال والناشئة',title:'عادة قراءة تبدأ من الصغر',text:'قصص مصورة بلغة عربية سليمة وسهلة، وكتب أنشطة تجعل القراءة وقتاً ينتظره الطفل.',pts:['قصص مصورة مناسبة لكل عمر','كتب أنشطة وتلوين','سلاسل مغامرات للناشئة'],m:[['القصص المصورة',95],['كتب الأنشطة',80],['سلاسل الناشئة',72]]}
+  ];
+  var tabsEl=$('#tabs'),panel=$('#panel'),curTab=0;
+  tabsEl.innerHTML=services.map(function(s,i){return '<button class="tab" role="tab" id="tab-'+s.id+'" aria-selected="'+(i===0)+'" data-i="'+i+'">'+s.name+'</button>'}).join('');
+  function showTab(i){
+    curTab=i;var s=services[i];
+    $$('.tab',tabsEl).forEach(function(t,k){t.setAttribute('aria-selected',k===i)});
+    panel.setAttribute('aria-labelledby','tab-'+s.id);
+    panel.style.animation='none';void panel.offsetWidth;panel.style.animation='';
+    panel.innerHTML='<div><h3>'+s.title+'</h3><p>'+s.text+'</p><ul class="checks">'+s.pts.map(function(p){return '<li>'+p+'</li>'}).join('')+'</ul></div>'+
+      '<div class="meters"><small>الأكثر طلباً هذا الشهر (أمثلة)</small>'+s.m.map(function(m){return '<div class="meter"><div class="row"><span>'+m[0]+'</span><b>'+m[1]+'%</b></div><div class="bar"><i data-w="'+m[1]+'"></i></div></div>'}).join('')+'</div>';
+    requestAnimationFrame(function(){requestAnimationFrame(function(){$$('.bar i',panel).forEach(function(b){b.style.width=b.dataset.w+'%'})})});
+  }
+  tabsEl.addEventListener('click',function(e){var b=e.target.closest('.tab');if(b)showTab(+b.dataset.i)});
+  tabsEl.addEventListener('keydown',function(e){
+    if(e.key==='ArrowLeft'||e.key==='ArrowRight'){var d=e.key==='ArrowLeft'?1:-1,n=(curTab+d+services.length)%services.length;showTab(n);$$('.tab',tabsEl)[n].focus()}
+  });
+  showTab(0);
+
+  function bindTilt(el){
+    if(reduce||!window.matchMedia('(hover:hover)').matches)return;
+    el.addEventListener('pointermove',function(e){
+      var r=el.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+      el.style.setProperty('--ry',(x*-8)+'deg');el.style.setProperty('--rx',(y*6)+'deg');
+    });
+    el.addEventListener('pointerleave',function(){el.style.setProperty('--rx','0deg');el.style.setProperty('--ry','0deg')});
+  }
+
+  /* ---------- cart ---------- */
+  var FREE=40,cart=store('salam-cart')||{},wish=store('salam-wish')||{};
+  var drawer=$('#drawer'),scrim=$('#scrim'),lastFocus=null;
+  function cartCount(){var n=0;for(var k in cart)n+=cart[k];return n}
+  function cartTotal(){var t=0;for(var k in cart)if(byId[k])t+=byId[k].p*cart[k];return t}
+  function saveCart(){store('salam-cart',cart)}
+  function updateCart(bump){
+    var n=cartCount(),t=cartTotal(),c=$('#cartCnt');
+    c.textContent=n;
+    if(bump){c.classList.remove('bump');void c.offsetWidth;c.classList.add('bump')}
+    $('#cartTotal').textContent='$'+fmt(t);
+    var pct=Math.min(100,t/FREE*100);
+    $('#shipBar').style.width=pct+'%';
+    $('#shipTxt').textContent=t>=FREE?'شحن مجاني مفعّل لهذا الطلب':(n?'أضف $'+fmt(FREE-t)+' للحصول على شحن مجاني':'الشحن مجاني للطلبات فوق $'+FREE);
+    var ids=Object.keys(cart).filter(function(k){return byId[k]&&cart[k]>0});
+    $('#cartList').innerHTML=ids.length?ids.map(function(k){
+      var b=byId[k];
+      return '<div class="ci"><div class="mini" style="background:linear-gradient(150deg,'+b.g[0]+','+b.g[1]+')"></div><div><b>'+b.t+'</b><small>'+b.a+'</small><div class="qty"><button data-act="dec" data-id="'+k+'" aria-label="إنقاص">−</button><span>'+cart[k]+'</span><button data-act="inc" data-id="'+k+'" aria-label="زيادة">+</button></div></div><div style="text-align:end"><span class="price">$'+fmt(b.p*cart[k])+'</span><br><button class="rm" data-act="rm" data-id="'+k+'">إزالة</button></div></div>';
+    }).join(''):'<p style="color:var(--muted);text-align:center;padding:40px 0">سلتك فارغة. ابدأ من معرض الكتب.</p>';
+  }
+  function addToCart(id){
+    cart[id]=(cart[id]||0)+1;saveCart();updateCart(true);
+    toast('أُضيف «'+byId[id].t+'» إلى السلة');
+  }
+  function openCart(){lastFocus=document.activeElement;drawer.classList.add('open');scrim.classList.add('open');document.body.style.overflow='hidden';$('#dClose').focus()}
+  function closeCart(){drawer.classList.remove('open');scrim.classList.remove('open');if(!$('#modal').classList.contains('open'))document.body.style.overflow='';if(lastFocus&&lastFocus.focus)lastFocus.focus()}
+  $('#cartBtn').addEventListener('click',openCart);
+  $('#dClose').addEventListener('click',closeCart);
+  scrim.addEventListener('click',closeCart);
+  $('#cartList').addEventListener('click',function(e){
+    var b=e.target.closest('[data-act]');if(!b)return;
+    var id=b.dataset.id,a=b.dataset.act;
+    if(a==='inc')cart[id]++;
+    else if(a==='dec'){cart[id]--;if(cart[id]<=0)delete cart[id]}
+    else delete cart[id];
+    saveCart();updateCart(false);
+  });
+  $('#clearCart').addEventListener('click',function(){cart={};saveCart();updateCart(false)});
+  $('#checkout').addEventListener('click',function(){
+    if(!cartCount()){toast('السلة فارغة، أضف كتاباً أولاً');return}
+    confetti();toast('شكراً لك! هذه نسخة تجريبية ولا يتم الدفع فعلياً.');
+  });
+  updateCart(false);
+
+  /* ---------- catalog ---------- */
+  var cats=[['all','الكل'],['novel','روايات'],['poetry','شعر'],['think','فكر وتاريخ'],['kids','أطفال'],['grow','تنمية']];
+  var state={cat:'all',q:'',sort:'def'};
+  var fEl=$('#filters'),shelf=$('#shelf');
+  fEl.innerHTML=cats.map(function(c,i){return '<button class="chip-btn" data-c="'+c[0]+'" aria-pressed="'+(i===0)+'">'+c[1]+'</button>'}).join('');
+  function renderShelf(){
+    var q=state.q.trim().toLowerCase();
+    var list=books.filter(function(b){
+      return (state.cat==='all'||b.c===state.cat)&&(!q||b.t.toLowerCase().indexOf(q)>-1||b.a.toLowerCase().indexOf(q)>-1);
+    });
+    if(state.sort==='asc')list.sort(function(a,b){return a.p-b.p});
+    if(state.sort==='desc')list.sort(function(a,b){return b.p-a.p});
+    shelf.innerHTML=list.length?list.map(function(b){
+      var w=!!wish[b.id];
+      return '<article class="book tilt" data-id="'+b.id+'"><button class="heart" data-act="wish" aria-pressed="'+w+'" aria-label="إضافة «'+b.t+'» إلى المفضلة"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.6-9-9.2C1.6 7.3 3.7 4 7 4c2 0 3.3 1 5 3 1.7-2 3-3 5-3 3.300 0 5.400 3.300 4 6.800C19 15.400 12 20 12 20z"/></svg></button><button class="cover-btn" data-act="open" aria-label="تفاصيل «'+b.t+'»">'+coverHTML(b)+'</button><div><h3>'+b.t+'</h3><div class="au">'+b.a+'</div></div><div class="buy"><span class="price">$'+b.p+'</span><button class="btn primary sm" data-act="add">أضف للسلة</button></div></article>';
+    }).join(''):'<div class="empty">لا توجد كتب تطابق بحثك. جرّب كلمة أخرى أو اطلب الكتاب من صفحة التواصل.</div>';
+    $$('.book',shelf).forEach(bindTilt);
+  }
+  fEl.addEventListener('click',function(e){
+    var b=e.target.closest('.chip-btn');if(!b)return;
+    $$('.chip-btn',fEl).forEach(function(x){x.setAttribute('aria-pressed',x===b)});
+    state.cat=b.dataset.c;renderShelf();
+  });
+  $('#q').addEventListener('input',function(){state.q=this.value;renderShelf()});
+  $('#sort').addEventListener('change',function(){state.sort=this.value;renderShelf()});
+  shelf.addEventListener('click',function(e){
+    var el=e.target.closest('[data-act]');if(!el)return;
+    var card=el.closest('.book'),id=+card.dataset.id,a=el.dataset.act;
+    if(a==='add')addToCart(id);
+    else if(a==='open')openModal(id,el);
+    else if(a==='wish'){
+      if(wish[id]){delete wish[id];toast('أُزيل من المفضلة')}else{wish[id]=1;toast('أُضيف «'+byId[id].t+'» إلى المفضلة')}
+      store('salam-wish',wish);el.setAttribute('aria-pressed',!!wish[id]);
+    }
+  });
+  renderShelf();
+
+  /* ---------- modal ---------- */
+  var modal=$('#modal'),modalId=0,mFocus=null;
+  function openModal(id,from){
+    var b=byId[id];modalId=id;mFocus=from;
+    $('#mCover').innerHTML=coverHTML(b);$('#mCat').textContent=b.cn;$('#mTitle').textContent=b.t;
+    $('#mAuthor').textContent=b.a+' · '+b.pg+' صفحة';$('#mDesc').textContent=b.d;$('#mPrice').textContent='$'+b.p;
+    $('#mTags').innerHTML=b.tg.map(function(t){return '<span class="tag">'+TAGS[t]+'</span>'}).join('');
+    modal.classList.add('open');document.body.style.overflow='hidden';$('#mClose').focus();
+  }
+  function closeModal(){modal.classList.remove('open');if(!drawer.classList.contains('open'))document.body.style.overflow='';if(mFocus&&mFocus.focus)mFocus.focus()}
+  $('#mClose').addEventListener('click',closeModal);
+  modal.addEventListener('click',function(e){if(e.target===modal)closeModal()});
+  $('#mAdd').addEventListener('click',function(){addToCart(modalId)});
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){if(modal.classList.contains('open'))closeModal();else if(drawer.classList.contains('open'))closeCart()}
+  });
+
+  /* ---------- finder ---------- */
+  function recommend(){
+    var mood=$('#mood').value,pref=+$('#prefPages').value,want=$$('#finder .opt input').filter(function(c){return c.checked}).map(function(c){return c.dataset.t});
+    $('#prefOut').textContent=pref+' صفحة';
+    var scored=books.map(function(b){
+      var s=0,why=[];
+      if(b.m.indexOf(mood)>-1){s+=5;why.push('يناسب مزاجك')}
+      var diff=Math.abs(b.pg-pref);s+=Math.max(0,1-diff/400)*3;
+      if(diff<=70)why.push('قريب من عدد الصفحات الذي تفضله ('+b.pg+')');
+      want.forEach(function(t){if(b.tg.indexOf(t)>-1){s+=1.5;why.push(TAGS[t])}});
+      return {b:b,s:s,why:why};
+    }).sort(function(x,y){return y.s-x.s});
+    var top=scored[0],alt=scored[1];
+    $('#pick').innerHTML='<small>كتابك المقترح</small><div class="big">'+top.b.t+'</div><small>'+top.b.a+' · '+top.b.cn+'</small>'+
+      '<ul>'+(top.why.length?top.why.map(function(w){return '<li>'+w+'</li>'}).join(''):'<li>أقرب كتاب لاختياراتك</li>')+'</ul>'+
+      '<div class="line" style="margin-top:14px"><span>السعر</span><b class="price">$'+top.b.p+'</b></div>'+
+      '<div class="line"><span>بديل مقترح</span><b>'+alt.b.t+'</b></div>'+
+      '<div class="row-btn"><button class="btn primary sm" id="pickAdd" type="button">أضف للسلة</button><button class="btn sm" id="pickOpen" type="button">التفاصيل</button></div>';
+    $('#pickAdd').addEventListener('click',function(){addToCart(top.b.id)});
+    $('#pickOpen').addEventListener('click',function(){openModal(top.b.id,this)});
+  }
+  ['#mood','#prefPages'].forEach(function(s){$(s).addEventListener('input',recommend)});
+  $$('#finder .opt input').forEach(function(c){c.addEventListener('change',recommend)});
+  recommend();
+
+  /* ---------- membership ---------- */
+  var plans=[
+    {n:'قارئ',p:5,f:['خصم 5% على كل طلب','إشعار مبكر بالإصدارات الجديدة','قائمة مفضلة محفوظة']},
+    {n:'شغوف',p:12,feat:1,f:['خصم 10% على كل طلب','شحن مجاني دائماً','ترشيح شخصي كل شهر','دعوة إلى نادي القراءة']},
+    {n:'نهِم',p:25,f:['خصم 15% على كل طلب','شحن مجاني دائماً','كتاب هدية كل شهر (حتى $15)','حجز النسخ المحدودة قبل الجميع']}
+  ];
+  var yearly=false,plansEl=$('#plans');
+  function renderPlans(){
+    plansEl.innerHTML=plans.map(function(p,i){
+      var price=yearly?Math.round(p.p*.8*10)/10:p.p;
+      return '<div class="plan tilt'+(p.feat?' feat':'')+'">'+(p.feat?'<span class="tagl">الأكثر اختياراً</span>':'')+'<h3>'+p.n+'</h3><div class="pr">$'+price+' <small>/ شهرياً'+(yearly?' (تُدفع سنوياً)':'')+'</small></div><ul class="checks">'+p.f.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul><button class="btn'+(p.feat?' primary':'')+'" data-plan="'+i+'" type="button">انضم كـ'+p.n+'</button></div>';
+    }).join('');
+    $$('.plan',plansEl).forEach(bindTilt);
+  }
+  plansEl.addEventListener('click',function(e){
+    var b=e.target.closest('[data-plan]');if(!b)return;
+    toast('اخترت عضوية «'+plans[+b.dataset.plan].n+'». هذه نسخة تجريبية ولا يتم الدفع فعلياً.');
+  });
+  $('#billing').addEventListener('click',function(){yearly=!yearly;this.setAttribute('aria-checked',yearly);renderPlans()});
+  renderPlans();
+
+  /* ---------- reviews ---------- */
+  var reviews=[
+    {q:'وصلني الكتاب مغلّفاً كهدية مع بطاقة صغيرة، وفرحت به صديقتي أكثر مما توقعت.',n:'لينا العمر',r:'قارئة منذ سنتين'},
+    {q:'أداة اقتراح الكتب دلّتني على رواية لم أكن لأختارها بنفسي، وكانت أجمل ما قرأت هذا العام.',n:'كريم الصباغ',r:'عضو شغوف'},
+    {q:'أخيراً مكتبة تهتم بكتب الأطفال بالعربية السليمة. صار ابني يطلب قصة قبل النوم كل ليلة.',n:'هدى المنصور',r:'أمّ لطفلين'},
+    {q:'طلبت كتاباً نفد من السوق فوجدوه لي خلال أسبوع. خدمة نادرة هذه الأيام.',n:'د. ياسر النعيمي',r:'أستاذ جامعي'}
+  ];
+  var sl=$('#slider'),si=0,autoT;
+  sl.innerHTML=reviews.map(function(r,i){
+    return '<article class="slide'+(i===0?' active':'')+'" aria-label="رأي '+(i+1)+' من '+reviews.length+'"><q>'+r.q+'</q><div class="who"><span class="avatar">'+r.n.replace('د. ','').charAt(0)+'</span><div><b>'+r.n+'</b><small>'+r.r+'</small></div></div></article>';
+  }).join('')+'<div class="slider-ctl"><button class="icon-btn" id="sNext" aria-label="التالي">→</button><div class="dots">'+reviews.map(function(_,i){return '<button class="dot" data-i="'+i+'" aria-label="الرأي '+(i+1)+'" aria-current="'+(i===0)+'"></button>'}).join('')+'</div><button class="icon-btn" id="sPrev" aria-label="السابق">←</button></div>';
+  function go(i){si=(i+reviews.length)%reviews.length;$$('.slide',sl).forEach(function(s,k){s.classList.toggle('active',k===si)});$$('.dot',sl).forEach(function(d,k){d.setAttribute('aria-current',k===si)})}
+  function auto(){clearInterval(autoT);if(!reduce)autoT=setInterval(function(){go(si+1)},6500)}
+  $('#sNext').addEventListener('click',function(){go(si+1);auto()});
+  $('#sPrev').addEventListener('click',function(){go(si-1);auto()});
+  sl.addEventListener('click',function(e){var d=e.target.closest('.dot');if(d){go(+d.dataset.i);auto()}});
+  sl.addEventListener('pointerenter',function(){clearInterval(autoT)});
+  sl.addEventListener('pointerleave',auto);
+  auto();
+
+  /* ---------- faq ---------- */
+  var faqs=[
+    ['كم يستغرق التوصيل؟','داخل المدينة من يوم إلى يومين، وإلى بقية الدول من خمسة إلى تسعة أيام عمل بحسب الوجهة.'],
+    ['هل يمكنني إرجاع كتاب؟','نعم، خلال 14 يوماً من الاستلام بشرط أن يكون بحالته الأصلية، ونعيد لك ثمنه.'],
+    ['هل الكتب أصلية؟','نشتري مباشرة من دور النشر والموزعين المعتمدين، ولا نبيع نسخاً مقلدة.'],
+    ['هل تغلّفون الهدايا؟','نعم، التغليف مجاني مع بطاقة تكتب عليها ما تشاء.'],
+    ['ماذا لو لم أجد الكتاب عندكم؟','اطلبه من نموذج التواصل، وسنبحث عنه ونخبرك بالتوفر والسعر خلال يوم عمل.']
+  ];
+  var fl=$('#faqList');
+  fl.innerHTML=faqs.map(function(f,i){
+    return '<div class="qa'+(i===0?' open':'')+'"><button aria-expanded="'+(i===0)+'" aria-controls="ans'+i+'"><span>'+f[0]+'</span><span class="pm" aria-hidden="true">+</span></button><div class="ans" id="ans'+i+'" role="region"><div><p>'+f[1]+'</p></div></div></div>';
+  }).join('');
+  fl.addEventListener('click',function(e){
+    var b=e.target.closest('.qa>button');if(!b)return;
+    var q=b.parentElement,open=!q.classList.contains('open');
+    $$('.qa',fl).forEach(function(x){x.classList.remove('open');x.firstChild.setAttribute('aria-expanded','false')});
+    if(open){q.classList.add('open');b.setAttribute('aria-expanded','true')}
+  });
+
+  /* ---------- confetti ---------- */
+  var cv=$('#confetti'),cx=cv.getContext('2d'),bits=[],running=false;
+  function confetti(){
+    if(reduce)return;
+    cv.width=window.innerWidth;cv.height=window.innerHeight;
+    var pal=[cssVar('--accent'),cssVar('--accent2'),cssVar('--accent3'),cssVar('--violet')];
+    for(var i=0;i<150;i++)bits.push({x:cv.width/2+(Math.random()-.5)*200,y:cv.height*.6,vx:(Math.random()-.5)*14,vy:-Math.random()*16-4,s:Math.random()*8+4,a:Math.random()*6.28,va:(Math.random()-.5)*.4,c:pal[i%4],life:0});
+    if(!running){running=true;requestAnimationFrame(cf)}
+  }
+  function cf(){
+    cx.clearRect(0,0,cv.width,cv.height);
+    bits=bits.filter(function(b){return b.y<cv.height+30&&b.life<200});
+    bits.forEach(function(b){
+      b.life++;b.vy+=.32;b.vx*=.99;b.x+=b.vx;b.y+=b.vy;b.a+=b.va;
+      cx.save();cx.translate(b.x,b.y);cx.rotate(b.a);cx.fillStyle=b.c;cx.globalAlpha=Math.max(0,1-b.life/200);cx.fillRect(-b.s/2,-b.s/4,b.s,b.s/2);cx.restore();
+    });
+    if(bits.length)requestAnimationFrame(cf);else{running=false;cx.clearRect(0,0,cv.width,cv.height)}
+  }
+  $('#logo').addEventListener('click',function(){confetti();toast('أهلاً بك في سلام الروح')});
+
+  /* ---------- copy + form ---------- */
+  $('#copyMail').addEventListener('click',function(){
+    var el=$('#mail'),txt=el.textContent;
+    function sel(){var r=document.createRange();r.selectNodeContents(el);var s=window.getSelection();s.removeAllRanges();s.addRange(r);toast('حدّدنا البريد، انسخه بالضغط المطوّل أو Ctrl+C')}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){toast('تم نسخ البريد')},sel)}else sel();
+  });
+  var form=$('#form');
+  var rules={
+    name:function(v){return v.trim().length>=2?'':'اكتب اسمك (حرفان على الأقل)'},
+    email:function(v){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim())?'':'اكتب بريداً صحيحاً مثل name@mail.com'},
+    kind:function(v){return v?'':'اختر موضوع الرسالة'},
+    msg:function(v){return v.trim().length>=10?'':'اكتب رسالة من عشرة أحرف على الأقل'}
+  };
+  var ids={name:'#fname',email:'#femail',kind:'#fkind',msg:'#fmsg'};
+  function check(k){var f=$('[data-f="'+k+'"]',form),m=rules[k]($(ids[k]).value);f.classList.toggle('err',!!m);$('.msg',f).textContent=m;return !m}
+  Object.keys(ids).forEach(function(k){
+    $(ids[k]).addEventListener('blur',function(){check(k)});
+    $(ids[k]).addEventListener('input',function(){if($('[data-f="'+k+'"]',form).classList.contains('err'))check(k)});
+  });
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var ok=Object.keys(ids).map(check).every(Boolean);
+    if(!ok){toast('راجع الحقول المظلّلة بالأحمر');var bad=$('.field.err input,.field.err select,.field.err textarea',form);if(bad)bad.focus();return}
+    confetti();toast('شكراً لك! تم التحقق من بياناتك. هذه نسخة تجريبية ولا ترسل البريد فعلياً.');form.reset();
+  });
+})();
+</script>
+
+</body></html>
